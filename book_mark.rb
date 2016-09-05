@@ -1,6 +1,8 @@
 require 'sinatra/base'
+require 'rubygems'
+require 'data_mapper'
 
-class book_mark < Sinatra::Base
+class Book_Mark < Sinatra::Base
   get '/' do
     'Hello book_mark!'
   end
