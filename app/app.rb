@@ -55,11 +55,18 @@ class Bookmark < Sinatra::Base
 
   post '/sign_in' do
     if User.login(params[:email], params[:password])
+      session[:id] = User.first(email: params[:email]).id
       redirect '/links'
     else
       flash.now[:error] = ['Incorrect Password']
       erb :'users/sign_in'
     end
+  end
+
+  post '/sign_out' do
+    session[:id] = nil
+    flash.keep[:notice] = 'ciao!'
+    redirect '/links'
   end
 
   post '/welcome' do

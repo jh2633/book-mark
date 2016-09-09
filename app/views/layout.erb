@@ -5,6 +5,10 @@
   </head>
 
   <body>
+    <% if flash[:notice] %>
+
+        <p> <%= flash[:notice] %> </p>
+      <% end %>
     <% if the_user %>
     <form action='/sign_out' method='post'>
     <button type='submit'>Sign Out</button>

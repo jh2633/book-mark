@@ -7,6 +7,8 @@ feature 'user sign_out' do
     click_button('Sign Up')
     visit '/links'
     click_button('Sign Out')
+    expect(page.status_code).to eq 200
     expect(page).not_to have_content('joseph@coffeenutcase.com')
+    expect(page).to have_content('ciao!')
   end
 end
