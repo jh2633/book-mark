@@ -2,6 +2,7 @@ ENV["RACK_ENV"] ||= "development"
 require 'sinatra/base'
 require_relative 'data_mapper_setup'
 require 'sinatra/flash'
+require 'bcrypt'
 
 
 class Bookmark < Sinatra::Base
@@ -30,9 +31,9 @@ class Bookmark < Sinatra::Base
 
   post '/add-link' do
     link = Link.new(:title => params[:title], :url => params[:url])
-    params[:tag].split(", ").each do |tag|
-      link.tags << Tag.create(name: tag)
-    end
+      params[:tag].split(", ").each do |tag|
+        link.tags << Tag.create(name: tag)
+      end
     link.save
     redirect '/links'
   end
@@ -46,6 +47,19 @@ class Bookmark < Sinatra::Base
   get '/sign_up' do
     @user = User.new
     erb :'users/sign_up'
+  end
+
+  get '/sign_in' do
+    erb :'users/sign_in'
+  end
+
+  post '/sign_in' do
+    if User.login(params[:email], params[:password])
+      redirect '/links'
+    else
+      flash.now[:error] = ['Incorrect Password']
+      erb :'users/sign_in'
+    end
   end
 
   post '/welcome' do

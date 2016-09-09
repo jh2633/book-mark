@@ -20,15 +20,9 @@ class User
   validates_confirmation_of :password,
     :message => 'Password mismatch'
 
-  def login(email)
-      @user = self.find_by_email(email)
-      if @user.password == params[:password]
-        # give_token
-        true
-      else
-        # redirect_to home_url
-        false
-      end
+  def self.login(email, password)
+      user = first(email: email)
+      user && BCrypt::Password.new(user.password) == password
   end
 
 end
